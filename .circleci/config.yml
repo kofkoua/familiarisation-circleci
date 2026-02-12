@@ -1,132 +1,92 @@
 version: 2.1
 
 jobs:
-  waitForStagingToBeUp:
+  checkout_and_unit_test:
+    description: A job that says Hello
     machine: true
     steps:
-      - run: echo "Waiting until response from staging..."
-  deployProd:
+      - run: echo "Hello World!"
+
+  deploy_backend:
+    description: A job that says Hello
     machine: true
     steps:
-      - run: echo "deploy production build"
-  notifyTeamOfNewBuild:
+      - run: echo "Hello World!"
+
+  integration_tests_backend:
+    description: A job that says Hello
     machine: true
     steps:
-      - run: echo "notifying team of new build pipeline"
-  acceptances1:
+      - run: echo "Hello World!"
+
+  deploy_staging:
+    description: A job that says Hello
     machine: true
     steps:
-      - run: echo "acceptance tests 1-5"
-  checkoutAndTest:
-    docker:
-      - image: cimg/node:15.8.0
-    steps:
-      - checkout
-      - run: echo "unit tests"
-  acceptances2:
+      - run: echo "Hello World!"
+
+  acceptance_tests_1:
+    description: A job that says Hello
     machine: true
     steps:
-      - run: echo "acceptance tests 6-10"
-  deployStaging:
+      - run: echo "Hello World!"
+
+  acceptance_tests_2:
+    description: A job that says Hello
     machine: true
     steps:
-      - run: echo "deploy staging"
-  notifyNewVersion:
+      - run: echo "Hello World!"
+
+  acceptance_tests_3:
+    description: A job that says Hello
     machine: true
     steps:
-      - run: echo "notifying client of new version"
+      - run: echo "Hello World!"
+
+  acceptance_tests_4:
+    description: A job that says Hello
+    machine: true
+    steps:
+      - run: echo "Hello World!"
+
+  deploy_production:
+    description: A job that says Hello
+    machine: true
+    steps:
+      - run: echo "Hello World!"
+
+
 workflows:
-  build:
+  monWorkflow:
     jobs:
-      - notifyTeamOfNewBuild
-      - checkoutAndTest
-      - deployStaging:
+      - checkout_and_unit_test
+      - deploy_backend:
           requires:
-            - checkoutAndTest
-      - waitForStagingToBeUp:
+            - checkout_and_unit_test
+      - integration_tests_backend:
           requires:
-            - deployStaging
-      - acceptances1:
+            - deploy_backend
+      - deploy_staging:
           requires:
-            - waitForStagingToBeUp
-      - acceptances2:
+            - integration_tests_backend
+      - acceptance_tests_1:
           requires:
-            - waitForStagingToBeUp
-      - deployProd:
+            - deploy_staging
+      - acceptance_tests_2:
           requires:
-            - acceptances1
-            - acceptances2
-      - notifyNewVersion:
+            - deploy_staging
+      - acceptance_tests_3:
           requires:
-            - deployProd
-
-
-
-
-# version: 2.1
-
-# jobs:
-#   checkout_and_unit_test:
-#     description: A job that says Hello
-#     machine: true
-#     steps:
-#       - run: echo "Hello World!"
-
-#   deploy_backend:
-#     description: A job that says Hello
-#     machine: true
-#     steps:
-#       - run: echo "Hello World!"
-
-#   integration_tests_backend:
-#     description: A job that says Hello
-#     machine: true
-#     steps:
-#       - run: echo "Hello World!"
-
-#   deploy_staging:
-#     description: A job that says Hello
-#     machine: true
-#     steps:
-#       - run: echo "Hello World!"
-
-#   acceptance_tests_1:
-#     description: A job that says Hello
-#     machine: true
-#     steps:
-#       - run: echo "Hello World!"
-
-#   acceptance_tests_2:
-#     description: A job that says Hello
-#     machine: true
-#     steps:
-#       - run: echo "Hello World!"
-
-#   acceptance_tests_3:
-#     description: A job that says Hello
-#     machine: true
-#     steps:
-#       - run: echo "Hello World!"
-
-#   acceptance_tests_4:
-#     description: A job that says Hello
-#     machine: true
-#     steps:
-#       - run: echo "Hello World!"
-
-#   deploy_production:
-#     description: A job that says Hello
-#     machine: true
-#     steps:
-#       - run: echo "Hello World!"
-
-
-# workflows:
-#   monWorkflow:
-#     jobs:
-#       - checkout_and_unit_test
-#       - deploy_backend:
-#           requires:
+            - deploy_staging
+      - acceptance_tests_4:
+          requires: 
+            - deploy_staging
+      - deploy_production:
+          requires:
+            - acceptance_tests_1
+            - acceptance_tests_2
+            - acceptance_tests_3
+            - acceptance_tests_4
 
 
 
